@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "allowJs": true,
+    "noEmit": true,
+    "noImplicitAny": false,
+    "baseUrl": ".",
+    "module": "CommonJS",
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  }
+}
