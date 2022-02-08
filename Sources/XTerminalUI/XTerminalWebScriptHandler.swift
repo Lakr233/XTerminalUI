@@ -38,5 +38,8 @@ class XTerminalWebScriptHandler: NSObject, WKScriptMessageHandler {
 
     deinit {
         debugPrint("\(self) __deinit__")
+        onBellChain = nil
+        onDataChain = nil
+        onTitleChain = nil
     }
 }
