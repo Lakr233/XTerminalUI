@@ -59,8 +59,8 @@ class XTerminalCore: XTerminal {
         associatedWebView = TransparentWebView(frame: .zero, configuration: configuration)
         associatedWebView.uiDelegate = associatedWebDelegate
         associatedWebView.navigationDelegate = associatedWebDelegate
-        associatedWebView.setValue(false, forKey: "drawsBackground")
         #if os(macOS)
+            associatedWebView.setValue(false, forKey: "drawsBackground")
             if #available(macOS 12.0, *) {
                 associatedWebView.underPageBackgroundColor = .clear
             }
