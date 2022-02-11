@@ -22,10 +22,6 @@
             fatalError("unavailable")
         }
 
-        public func loadTerminalPage() {
-            associatedCore.loadTerminalPage()
-        }
-
         @discardableResult
         public func setupBufferChain(callback: ((String) -> Void)?) -> Self {
             associatedCore.setupBufferChain(callback: callback)

@@ -21,10 +21,6 @@ import SwiftUI
 
         public func updateNSView(_: NSViewType, context _: Context) {}
 
-        public func loadTerminalPage() {
-            correspondingView.loadTerminalPage()
-        }
-
         @discardableResult
         public func setupBufferChain(callback: ((String) -> Void)?) -> Self {
             correspondingView.setupBufferChain(callback: callback)

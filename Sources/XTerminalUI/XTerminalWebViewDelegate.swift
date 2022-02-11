@@ -11,6 +11,13 @@ import WebKit
 class XTerminalWebViewDelegate: NSObject, WKNavigationDelegate, WKUIDelegate {
     weak var userContentController: WKUserContentController?
 
+    var navigateCompleted: Bool = false
+
+    func webView(_: WKWebView, didFinish _: WKNavigation!) {
+        debugPrint("\(self) \(#function)")
+        navigateCompleted = true
+    }
+
     deinit {
         // webkit's bug, still holding ref after deinit
         // the buffer chain will that holds a retain to shell

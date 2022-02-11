@@ -19,8 +19,6 @@ import WebKit
 #endif
 
 protocol XTerminal {
-    func loadTerminalPage()
-
     @discardableResult
     func setupBufferChain(callback: ((String) -> Void)?) -> Self
 
@@ -69,9 +67,7 @@ class XTerminalCore: XTerminal {
             associatedWebView.backgroundColor = UIColor.clear
             associatedWebView.scrollView.backgroundColor = UIColor.clear
         #endif
-    }
 
-    func loadTerminalPage() {
         guard let resources = Bundle
             .module
             .url(
@@ -105,18 +101,50 @@ class XTerminalCore: XTerminal {
         return self
     }
 
+    var writeBuffer: [Data] = []
+    let lock = NSLock()
+    let writeLock = NSLock()
+
     func write(_ str: String) {
         guard str.count > 0,
               let data = str.data(using: .utf8)
         else {
             return
         }
+        lock.lock()
+        writeBuffer.append(data)
+        lock.unlock()
+        DispatchQueue.global().async {
+            self.writeData()
+        }
+    }
+
+    func writeData() {
+        guard writeLock.try() else {
+            return
+        }
+        defer { writeLock.unlock() }
+
+        // wait for the webview to load
+        while !associatedWebDelegate.navigateCompleted { usleep(1000) }
+
         let webView = associatedWebView
+
+        lock.lock()
+        let copy = writeBuffer
+        writeBuffer = []
+        lock.unlock()
+
+        let write = copy.map { $0.base64EncodedString() }
+
         DispatchQueue.main.async {
-            let script = "term.writeUTF8(atob('\(data.base64EncodedString())'));"
-            webView.evaluateJavaScript(script) { _, error in
-                if let error = error {
-                    debugPrint(error.localizedDescription)
+            for data in write {
+                let script = "term.writeUTF8(atob('\(data)'));"
+                webView.evaluateJavaScript(script) { _, error in
+                    if let error = error {
+                        debugPrint(error.localizedDescription)
+                        debugPrint(script)
+                    }
                 }
             }
         }
