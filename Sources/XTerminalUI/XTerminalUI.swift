@@ -77,6 +77,7 @@ class XTerminalCore: XTerminal {
             )
         else {
             debugPrint("failed to load bundle resources, check your build system")
+            associatedWebDelegate.navigateCompleted = true
             return
         }
         let request = URLRequest(url: resources)
@@ -114,8 +115,8 @@ class XTerminalCore: XTerminal {
         lock.lock()
         writeBuffer.append(data)
         lock.unlock()
-        DispatchQueue.global().async {
-            self.writeData()
+        DispatchQueue.global().async { [weak self] in
+            self?.writeData()
         }
     }
 
@@ -174,7 +175,7 @@ class XTerminalCore: XTerminal {
         }
         group.wait()
         let size = CGSize(width: col, height: row)
-        debugPrint(size)
+//        debugPrint(size)
         return size
     }
 }
