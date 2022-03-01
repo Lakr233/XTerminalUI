@@ -8,9 +8,7 @@ declare global {
 
 declare module 'xterm' {
   export interface Terminal {
-    decodeUTF8(str: string): string
-    encodeUTF8(str: string): string
-    writeUTF8(str: string): void
+    writeBase64(str: string): void
   }
 }
 

@@ -1,6 +1,6 @@
 import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
-import { UTF8Decoder } from './utf8-decoder'
+import { base64ToUint8Array } from './utils'
 
 export function initialTerminal() {
   const $container = document.getElementById('terminal')
@@ -32,23 +32,9 @@ export function initialTerminal() {
     window.webkit?.messageHandlers.callbackHandler.postMessage(message)
   })
 
-  // hack
-
-  const w = term.write
-  term.write = function () {
-    const [data, cb] = Array.prototype.slice.call(arguments)
-    console.log('data: ', term.decodeUTF8(data))
-
-    w.call(this, term.decodeUTF8(data), cb)
-  }
-
   return term
 }
 
-Terminal.prototype.writeUTF8 = function (this: Terminal, str: string) {
-  this.write(str)
-}
-
-Terminal.prototype.decodeUTF8 = (text: string) => {
-  return new UTF8Decoder().decode(text)
+Terminal.prototype.writeBase64 = function (this: Terminal, base64: string) {
+  this.write(base64ToUint8Array(base64))
 }
