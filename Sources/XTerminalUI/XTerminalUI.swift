@@ -140,7 +140,7 @@ class XTerminalCore: XTerminal {
 
         DispatchQueue.main.async {
             for data in write {
-                let script = "term.write(atob('\(data)'));"
+                let script = "term.writeBase64('\(data)');"
                 webView.evaluateJavaScript(script) { _, error in
                     if let error = error {
                         debugPrint(error.localizedDescription)
