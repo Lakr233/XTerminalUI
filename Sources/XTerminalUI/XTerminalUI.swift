@@ -64,6 +64,7 @@ class XTerminalCore: XTerminal {
             }
             associatedWebView.layer?.backgroundColor = .clear
         #else
+            associatedWebView.isOpaque = false
             associatedWebView.backgroundColor = UIColor.clear
             associatedWebView.scrollView.backgroundColor = UIColor.clear
             associatedWebView.scrollView.isScrollEnabled = false
