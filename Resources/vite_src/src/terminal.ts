@@ -1,7 +1,7 @@
+import { debounce } from 'lodash-es'
 import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
 import { base64ToUint8Array } from './utils'
-
 export function initialTerminal() {
   const $container = document.getElementById('terminal')
   const term = new Terminal({
@@ -16,9 +16,12 @@ export function initialTerminal() {
   term.open($container)
   fitAddon.fit()
 
-  new ResizeObserver(() => {
-    fitAddon.fit()
-  }).observe($container)
+  new ResizeObserver(
+    debounce(() => {
+      fitAddon.fit()
+      console.log('resize')
+    }, 100),
+  ).observe($container)
 
   term.focus()
   term.onTitleChange((title) => {
