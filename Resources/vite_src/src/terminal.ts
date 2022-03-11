@@ -19,8 +19,11 @@ export function initialTerminal() {
   new ResizeObserver(
     debounce(() => {
       fitAddon.fit()
-      console.log('resize')
-    }, 100),
+      const msg = { cols: term.cols, rows: term.rows }
+      const message = { magic: 'size', msg: JSON.stringify(msg) }
+      console.log('resize', message)
+      window.webkit?.messageHandlers.callbackHandler.postMessage(message)
+    }, 100)
   ).observe($container)
 
   term.focus()

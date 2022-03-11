@@ -40,6 +40,12 @@
             return self
         }
 
+        @discardableResult
+        public func setupSizeChain(callback: ((CGSize) -> Void)?) -> Self {
+            associatedCore.setupSizeChain(callback: callback)
+            return self
+        }
+
         public func write(_ str: String) {
             associatedCore.write(str)
         }

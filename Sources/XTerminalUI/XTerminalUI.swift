@@ -28,6 +28,9 @@ protocol XTerminal {
     @discardableResult
     func setupBellChain(callback: (() -> Void)?) -> Self
 
+    @discardableResult
+    func setupSizeChain(callback: ((CGSize) -> Void)?) -> Self
+
     func write(_ str: String)
 
     func requestTerminalSize() -> CGSize
@@ -104,6 +107,12 @@ class XTerminalCore: XTerminal {
     @discardableResult
     func setupBellChain(callback: (() -> Void)?) -> Self {
         associatedScriptDelegate.onBellChain = callback
+        return self
+    }
+
+    @discardableResult
+    func setupSizeChain(callback: ((CGSize) -> Void)?) -> Self {
+        associatedScriptDelegate.onSizeChain = callback
         return self
     }
 
