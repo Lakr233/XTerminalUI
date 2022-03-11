@@ -87,6 +87,12 @@ import SwiftUI
             return self
         }
 
+        @discardableResult
+        public func setupSizeChain(callback: ((CGSize) -> Void)?) -> Self {
+            correspondingView.setupSizeChain(callback: callback)
+            return self
+        }
+
         public func write(_ str: String) {
             correspondingView.write(str)
         }
