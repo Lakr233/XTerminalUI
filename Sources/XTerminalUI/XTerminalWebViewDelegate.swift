@@ -16,12 +16,12 @@ class XTerminalWebViewDelegate: NSObject, WKNavigationDelegate, WKUIDelegate {
     func webView(_ view: WKWebView, didFinish _: WKNavigation!) {
         debugPrint("\(self) \(#function)")
         navigateCompleted = true
-        
+
         #if os(macOS)
             enableSearch(view: view)
         #endif
     }
-    
+
     func enableSearch(view: WKWebView) {
         DispatchQueue.global().async {
             let script = "window.manager.enableFeature(\"searchBar\")"

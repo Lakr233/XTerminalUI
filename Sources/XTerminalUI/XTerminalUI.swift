@@ -34,6 +34,8 @@ protocol XTerminal {
     func write(_ str: String)
 
     func requestTerminalSize() -> CGSize
+
+    func setTerminalFontSize(with size: Int)
 }
 
 class XTerminalCore: XTerminal {
@@ -174,6 +176,15 @@ class XTerminalCore: XTerminal {
         for write in base64Array {
             let script = "term.writeBase64('\(write)');"
             webView.evaluateJavascriptWithRetry(javascript: script)
+        }
+    }
+
+    func setTerminalFontSize(with size: Int) {
+        DispatchQueue.global().async {
+            let script = "window.setTheme({fontSize: \(size)})"
+            self.associatedWebView.evaluateJavascriptWithRetry(javascript: script)
+            let fit = "window.fit()"
+            self.associatedWebView.evaluateJavascriptWithRetry(javascript: fit)
         }
     }
 
